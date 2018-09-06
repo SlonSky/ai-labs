@@ -54,7 +54,7 @@ class Centroid(PointToClassMeter):
     def calc(self, o, c, pointToPointMeter):
         centroid = [np.mean(c[:, 0]), np.mean(c[:, 1])]
 
-        return pointToPointMeter().calc(o, centroid)
+        return pointToPointMeter.calc(o, centroid)
 
 
 class Neares(PointToClassMeter):
@@ -63,7 +63,7 @@ class Neares(PointToClassMeter):
         lenghts = []
 
         for element in c:
-            lenghts.append(pointToPointMeter().calc(o, element))
+            lenghts.append(pointToPointMeter.calc(o, element))
 
         return np.min(lenghts)
 
@@ -74,7 +74,7 @@ class Mean(PointToClassMeter):
         lenghts = []
 
         for element in c:
-            lenghts.append(pointToPointMeter().calc(o, element))
+            lenghts.append(pointToPointMeter.calc(o, element))
 
         return np.mean(lenghts)
 
@@ -85,7 +85,7 @@ class Furthest(PointToClassMeter):
         lenghts = []
 
         for element in c:
-            lenghts.append(pointToPointMeter().calc(o, element))
+            lenghts.append(pointToPointMeter.calc(o, element))
 
         return np.max(lenghts)
 
@@ -96,7 +96,7 @@ class TwoNeares(PointToClassMeter):
         lenghts = []
 
         for element in c:
-            lenghts.append(pointToPointMeter().calc(o, element))
+            lenghts.append(pointToPointMeter.calc(o, element))
 
         nearest1 = np.min(lenghts)
 

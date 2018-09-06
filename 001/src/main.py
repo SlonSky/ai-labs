@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from distance_meter import DistanceMeter
+from distance_meter import MinkovskyMeter, Furthest, SumabsMeter
+from distance_meter import Centroid
 
 classes = np.array(
     [[[0.05, 0.91],
@@ -40,9 +41,48 @@ classes = np.array(
       [0.25, 0.34],
       [0.15, 0.36]]])
 
-new_object = [0.1, 0.1]
+
+def user_input():
+    while True:
+        try:
+            x = float(input('enter x value: '))
+            y = float(input('enter y value: '))
+            return [x, y]
+        except ValueError:
+            continue
+
+def classify(lens):
+    index = lens.index(min(lens))
+
+    return str(index + 1)
+
+
+new_object = user_input()
+print('\n************\n************\n')
+print('\nMinkovsky lambda=5, centroid')
+lens = [Centroid().calc(new_object, i, MinkovskyMeter(5)) for i in classes]
+print(lens)
+print('Classified to class ' + classify(lens))
+
+print('\nMinkovsky labmda=5, furthest')
+lens = [Furthest().calc(new_object, i, MinkovskyMeter(5)) for i in classes]
+print(lens)
+print('Classified to class ' + classify(lens))
+
+print('\nSumabs, centroid')
+lens = [Centroid().calc(new_object, i, SumabsMeter()) for i in classes]
+print(lens)
+print('Classified to class ' + classify(lens))
+
+print('\nSumabs, furthest')
+lens = [Furthest().calc(new_object, i, SumabsMeter()) for i in classes]
+print(lens)
+print('Classified to class ' + classify(lens))
 
 for i, class_i in enumerate(classes):
     plt.plot(class_i[:, 0], class_i[:, 1], '*')
+
+plt.legend(['1','2','3','4','5','6'])
+plt.plot(new_object[0], new_object[1], 'X', c='000')
 
 plt.show()
