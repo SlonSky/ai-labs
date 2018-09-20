@@ -4,24 +4,24 @@ from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import numpy as np
 
-A = 1
-B = 2
-C = 3
-D = -2
-E = 4
-F = 7
-G = 2
-H = 9
-K = 3
-M = -1
-N = 3
-P = 2
+A = 2
+B = 5
+C = 1
+D = 3
+E = 1
+F = 2
+G = -1
+H = 3
+K = 4
+M = 7
+N = 2
+P = -1
 Q = 4
-R = 6
-S = 7
-V = 5
-W = -2
-Z = -3
+R = -6
+S = 5
+V = -1
+W = -1
+Z = 2
 
 def d12(x, y):
     return A * y + B * x + C
@@ -41,27 +41,31 @@ def d2(x, y):
 def d3(x, y):
     return V * y + W * x + Z
 
-zfuncs = [
-    d12,
-    d13,
-    d23,
-    # d1,
-    # d2,
-    # d3
-]
+X = np.arange(-100, 100, 1)
+Y = np.arange(-100, 100, 1)
 
-fig = plt.figure()
-ax = fig.gca(projection='3d')
+class1 = [];
+class2 = [];
+class3 = [];
 
-# Make data.
-X = np.arange(-10, 10, 0.25)
-Y = np.arange(-10, 10, 0.25)
-X, Y = np.meshgrid(X, Y)
+def color(x, y):
+    if d12(x, y) > 0 and d13(x, y) > 0:
+        class1.append([x, y])
+    if d12(x, y) < 0 and d23(x, y) > 0:
+        class2.append([x, y])
+    if d13(x, y) < 0 and d23(x, y) < 0:
+        class3.append([x, y])
 
-for zfunc in zfuncs:
-    Z = zfunc(X, Y)
+for x in X:
+    for y in Y:
+        color(x, y)
 
-    # Plot the surface.
-    ax.plot_wireframe(X, Y, Z, rstride=10, cstride=10)
+class1 = np.array(class1)
+class2 = np.array(class2)
+class3 = np.array(class3)
+
+plt.plot(class1[:, 0], class1[:, 1], '.r')
+plt.plot(class2[:, 0], class2[:, 1], '.g')
+plt.plot(class3[:, 0], class3[:, 1], '.b')
 
 plt.show()
