@@ -79,21 +79,15 @@ def classify(funcs, objects):
 
     #     labels = np.where(y[classified])[1]
     labels = list()
-    cl =0
-    classes = np.array([
-        [True, False, True, True, False, False],
-        [False, True, False, False, True, False],
-        [False, False, False, False, False, True],
-        [False, False, False, False, False, False],
-    ])
-
     for i in range(y.shape[0]):
-
-        for j in range(classes.shape[0]):
-            if np.all(i == classes[j]):
-                cl = j
-                print(cl)
-                break
+        if y[i, 0] and y[i, 2] and y[i, 3]:
+            cl = 0
+        elif y[i, 1] and y[i, 4] and not y[i, 0]:
+            cl = 1
+        elif not y[i, 1] and not y[i, 2] and y[i, 5]:
+            cl = 2
+        elif not y[i, 3] and not y[i, 4] and not y[i, 5]:
+            cl = 3
         else:
             cl = 4
 
@@ -155,41 +149,43 @@ def onclick(event):
 
 classes = np.array(
     [
-        [[0.05, 0.91],
-         [0.14, 0.96],
-         [0.16, 0.9],
-         [0.07, 0.7],
-         [0.2, 0.63]],
+#         [[0.05, 0.91],
+#       [0.14, 0.96],
+#       [0.16, 0.9],
+#       [0.07, 0.7],
+#       [0.2, 0.63]],
 
-        # [[0.49, 0.89],
-        #  [0.34, 0.81],
-        #  [0.36, 0.67],
-        #  [0.47, 0.49],
-        #  [0.52, 0.53]],
+     
+         [[0.49, 0.89],
+      [0.34, 0.81],
+      [0.36, 0.67],
+      [0.47, 0.49],
+      [0.52, 0.53]],
 
-        [[0.62, 0.83],
-         [0.79, 0.92],
-         [0.71, 0.92],
-         [0.78, 0.83],
-         [0.87, 0.92]],
+#      [[0.62, 0.83],
+#       [0.79, 0.92],
+#       [0.71, 0.92],
+#       [0.78, 0.83],
+#       [0.87, 0.92]],
 
-        [[0.55, 0.4],
-         [0.66, 0.32],
-         [0.74, 0.49],
-         [0.89, 0.3],
-         [0.77, 0.2]],
-        #
-        # [[0.31, 0.43],
-        #  [0.45, 0.27],
-        #  [0.33, 0.16],
-        #  [0.56, 0.29],
-        #  [0.54, 0.13]],
+     [[0.55, 0.4],
+      [0.66, 0.32],
+      [0.74, 0.49],
+      [0.89, 0.3],
+      [0.77, 0.2]],
 
-        [[0.05, 0.15],
-         [0.09, 0.39],
-         [0.13, 0.51],
-         [0.25, 0.34],
-         [0.15, 0.36]]])
+     [[0.31, 0.43],
+      [0.45, 0.27],
+      [0.33, 0.16],
+      [0.56, 0.29],
+      [0.54, 0.13]],
+
+     [[0.05, 0.15],
+      [0.09, 0.39],
+      [0.13, 0.51],
+      [0.25, 0.34],
+      [0.15, 0.36]]
+    ])
 
 pairs = [
     (0, 1),
@@ -199,6 +195,7 @@ pairs = [
     (1, 3),
     (2, 3)
 ]
+
 funcs = find_funcs(classes, pairs)
 objects = classes.reshape(-1, 2)
 labels = classify(funcs, objects)
@@ -206,13 +203,14 @@ lines = [get_line(funcs[i], classes) for i in range(len(funcs))]
 
 #################################
 
-dark = 0.8
+dark = 0.85
 grey = 0.85
+rest = 0.3
 area_colors = [
-    (dark, 0, 0, 1),
-    (0, dark, 0, 1),
-    (0, 0, dark, 1),
-    (dark, 0, dark, 1),
+    (dark, rest, rest, 1),
+    (0.1, dark, rest, 1),
+    (0.1, rest, dark, 1),
+    (dark, rest, dark, 1),
     (grey, grey, grey, 1),
     (grey, grey, grey, 1)
 ]
@@ -222,10 +220,10 @@ marker_colors = [
     (0, 1, 0),
     (0, 0, 1),
     (1, 0, 1),
-    (1, 0,),
+    (1, 1, 1),
 ]
 
-line_markers = '.vsp+x3Pp*'
+line_markers = '.vspPp*'
 
 fig = plt.figure(figsize=(12, 10))
 cid = fig.canvas.mpl_connect('button_press_event', onclick)
